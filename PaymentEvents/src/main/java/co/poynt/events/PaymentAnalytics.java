@@ -5,6 +5,8 @@ import android.content.Context;
 import co.poynt.events.data.AnalyticsHelper;
 import co.poynt.events.model.PFEvent;
 
+import java.util.UUID;
+
 
 public class PaymentAnalytics extends AnalyticsHelper {
 
@@ -31,7 +33,10 @@ public class PaymentAnalytics extends AnalyticsHelper {
         mAnalyticsHelper.initializeDb(context);
     }
 
-    public void logEvent(final PFEvent event, final String sessionId, final String data) {
+    public void logEvent(final PFEvent event, String sessionId, final String data) {
+        if (sessionId == null) {
+            sessionId = UUID.randomUUID().toString();
+        }
         switch (event) {
             case INIT:
                 mAnalyticsHelper.startSession(sessionId);

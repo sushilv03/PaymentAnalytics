@@ -32,4 +32,16 @@ public interface TransactionDao {
 
     @Delete
     void deleteTransaction(Transaction trx);
+
+    @Query("SELECT * FROM transaction_analytics_db WHERE trx_action= :action")
+    int getTotalActionEvents(String action);
+
+    @Query("SELECT * FROM transaction_analytics_db WHERE trx_status= :status")
+    int getTotalStatusEvents(String status);
+
+    @Query("SELECT * FROM transaction_analytics_db WHERE trx_result= :result")
+    int getTotalResultEvents(String result);
+
+    @Query("SELECT * FROM transaction_analytics_db WHERE trx_type= :type")
+    int getTotalTypeEvents(String type);
 }

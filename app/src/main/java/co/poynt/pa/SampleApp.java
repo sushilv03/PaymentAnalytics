@@ -3,8 +3,8 @@ package co.poynt.pa;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
-//import co.poynt.events.PaymentAnalytics;
-//import co.poynt.events.model.PFEvent;
+import co.poynt.events.PaymentAnalytics;
+import co.poynt.events.model.PFEvent;
 
 import java.util.UUID;
 
@@ -18,7 +18,6 @@ public class SampleApp extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        /*
         PaymentAnalytics.getInstance().initialize(this);
         mSessionId = UUID.randomUUID().toString();
         PaymentAnalytics.getInstance().logEvent(PFEvent.INIT, mSessionId);
@@ -28,9 +27,8 @@ public class SampleApp extends AppCompatActivity {
         logTransactionStatus(mSessionId, "STATUS");
         SystemClock.sleep(100);
         logTransactionComplete(mSessionId, "COMPLETE");
-        */
     }
-/*
+
     private void logTransactionAction(final String sessionId, String action) {
         PaymentAnalytics.getInstance().logEvent(PFEvent.ACTION, sessionId, action);
     }
@@ -46,6 +44,7 @@ public class SampleApp extends AppCompatActivity {
     private void performUnknownAction(String sessionId) {
         PaymentAnalytics.getInstance().logEvent(PFEvent.UNKNOWN, sessionId);
     }
-*/
+
+
 
 }

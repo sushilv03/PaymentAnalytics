@@ -17,7 +17,7 @@ public class AnalyticsHelper implements TransactionHelper {
 
     private static final String TAG = "AnalyticsHelper";
 
-    protected CompositeDisposable compositeDisposable = new CompositeDisposable();
+    private CompositeDisposable compositeDisposable;
 
     private static final String DATABASE_NAME = "transaction_analytics_db";
     private TransactionDatabase trxDatabase;
@@ -30,6 +30,8 @@ public class AnalyticsHelper implements TransactionHelper {
         trxDatabase = Room.databaseBuilder(context, TransactionDatabase.class, DATABASE_NAME)
                 .fallbackToDestructiveMigration()
                 .build();
+
+        compositeDisposable = new CompositeDisposable();
     }
 
     private TransactionDatabase getDatabase() {
@@ -159,6 +161,8 @@ public class AnalyticsHelper implements TransactionHelper {
         });
     }
 
+    //region Save / Update Database
+
     private DisposableObserver<Transaction> createNewSession() {
         return new DisposableObserver<Transaction>() {
             @Override
@@ -287,5 +291,64 @@ public class AnalyticsHelper implements TransactionHelper {
             }
         };
     }
+
+    //endregion
+
+
+    public void getActionEvents(final String action) {
+
+        DisposableObserver<Integer> processTrx = getTotalEventsForAction(action)
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .subscribeWith(getTotalActionEvents(action));
+        compositeDisposable.add(processTrx);
+    }
+
+
+    //region Query to Database
+
+    @Override
+    public Observable<Integer> getTotalStartEvents(String event) {
+        return null;
+    }
+
+    @Override
+    public Observable<Integer> getTotalEventsForAction(String action) {
+        return null;
+    }
+
+    @Override
+    public Observable<Integer> getTotalEventsForStatus(String status) {
+        return null;
+    }
+
+    @Override
+    public Observable<Integer> getTotalCompletedEvents(String result) {
+        return null;
+    }
+
+
+    private DisposableObserver<Integer> getTotalActionEvents(final String action) {
+        return new DisposableObserver<Integer>() {
+            @Override
+            public void onNext(Integer response) {
+                if (getDatabase() == null) {
+                    return;
+                }
+                getDatabase().daoAccess().getTotalActionEvents(action);
+            }
+
+            @Override
+            public void onError(@NonNull Throwable e) {
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        };
+    }
+
+    //endregion
 
 }
