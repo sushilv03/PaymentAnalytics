@@ -5,7 +5,8 @@ import android.arch.persistence.room.RoomDatabase;
 
 import co.poynt.events.model.Transaction;
 
-@Database(entities = {Transaction.class}, version = 2, exportSchema = false)
+//@Database(entities = {Transaction.class}, version = 2, exportSchema = false)
+@Database(entities = {Transaction.class}, version = 2)
 public abstract class TransactionDatabase extends RoomDatabase {
     public abstract TransactionDao daoAccess();
 }

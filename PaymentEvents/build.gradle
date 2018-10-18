@@ -1,6 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: "maven"
-
+apply from: "../quality.gradle"
 
 def getSdkVersion = { ->
     def stdout = new ByteArrayOutputStream()
@@ -16,6 +16,13 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = ["room.schemaLocation":
+                                     "$projectDir/schemas".toString()]
+            }
+        }
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_7
@@ -32,7 +39,14 @@ android {
             res.srcDirs = ['src/main/res']
             assets.srcDirs = ['src/main/assets']
         }
+
+        instrumentTest.setRoot('tests')
     }
+
+    lintOptions {
+        abortOnError false
+    }
+
     buildTypes {
         dev {
             minifyEnabled false
@@ -80,6 +94,8 @@ android {
     lintOptions {
         abortOnError false
     }
+
+    buildToolsVersion '27.0.3'
 }
 
 def coreAarFile = file('build/outputs/aar/PaymentEvents.aar')
@@ -146,8 +162,6 @@ repositories {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-
-    implementation 'com.android.support:appcompat-v7:26.1.0'
 
     annotationProcessor "android.arch.persistence.room:compiler:1.0.0"
 
